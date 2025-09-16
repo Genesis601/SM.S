@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classes & Academics - Admin Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --primary-bg: #0f1117;
+      --sidebar-bg: #161b22;
+      --card-bg: #1f2630;
+      --accent-color: #4da6ff;
+      --hover-color: #3a8bd8;
+      --text-color: #fff;
+      --text-secondary: #ddd;
+      --success-color: #28a745;
+      --warning-color: #ffc107;
+      --danger-color: #e74c3c;
+      --border-radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--primary-bg);
+      color: var(--text-color);
+      display: flex;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 250px;
+      background: var(--sidebar-bg);
+      padding: 20px;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      transition: transform 0.3s ease;
+      overflow-y: auto;
+      z-index: 1000;
+    }
+
+    .sidebar .logo {
+      color: var(--accent-color);
+      text-align: center;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .logo-icon {
+      font-size: 1.5rem;
+    }
+
+    .sidebar .nav-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar .nav-links li {
+      margin: 12px 0;
+    }
+
+    .sidebar .nav-links a {
+      text-decoration: none;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 500;
+      padding: 12px;
+      border-radius: var(--border-radius);
+      transition: all 0.3s;
+    }
+
+    .sidebar .nav-links a:hover {
+      background: var(--accent-color);
+      color: var(--text-color);
+    }
+
+    .sidebar .nav-links a.active {
+      background: var(--accent-color);
+      color: var(--text-color);
+    }
+
+    .sidebar .nav-links i {
+      width: 20px;
+      text-align: center;
+    }
+
+    /* Overlay for mobile */
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+    }
+
+    /* Main content */
+    .main-content {
+      flex: 1;
+      margin-left: 250px;
+      padding: 20px;
+      transition: margin-left 0.3s ease;
+    }
+
+    /* Topbar */
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #2a303c;
+    }
+
+    .search-box {
+      position: relative;
+      flex: 1;
+      max-width: 400px;
+    }
+
+    .search-box input {
+      padding: 10px 15px 10px 40px;
+      border-radius: 20px;
+      border: none;
+      outline: none;
+      width: 100%;
+      background: #1a2029;
+      color: var(--text-color);
+    }
+
+    .search-box i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-left: 20px;
+    }
+
+    .profile-img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #4da6ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .hamburger {
+      cursor: pointer;
+      font-size: 24px;
+      margin-right: 15px;
+      display: none;
+    }
+
+    /* Cards */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: var(--border-radius);
+      text-align: center;
+      transition: transform 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .card h3 {
+      font-size: 1rem;
+      margin-bottom: 10px;
+      color: var(--text-secondary);
+    }
+
+    .card p {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--accent-color);
+    }
+
+    /* Tabs */
+    .tabs-container {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 0;
+      background: #2c3440;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tab {
+      padding: 15px 20px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.3s;
+      border-bottom: 3px solid transparent;
+    }
+
+    .tab:hover {
+      background: #3a4455;
+    }
+
+    .tab.active {
+      background: var(--card-bg);
+      border-bottom: 3px solid var(--accent-color);
+    }
+
+    .tab-content {
+      display: none;
+      padding: 20px;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Table */
+    .table-container {
+      overflow-x: auto;
+      border-radius: var(--border-radius);
+      margin-top: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 600px;
+    }
+
+    th, td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid #333;
+    }
+
+    th {
+      background: #2c3440;
+      font-weight: 600;
+    }
+
+    tr:hover {
+      background: #2a303c;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+
+    .btn-add { 
+      background: var(--accent-color); 
+      color: white; 
+      margin-bottom: 15px;
+    }
+
+    .btn-edit { 
+      background: var(--warning-color); 
+      color: black; 
+      padding: 6px 12px;
+      margin-right: 5px;
+    }
+
+    .btn-delete { 
+      background: var(--danger-color); 
+      color: white; 
+      padding: 6px 12px;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 5px;
+    }
+
+    /* Mobile first adjustments */
+    @media screen and (max-width: 992px) {
+      .cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media screen and (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+      }
+      
+      .sidebar.active {
+        transform: translateX(0);
+      }
+      
+      .overlay.active {
+        display: block;
+      }
+      
+      .main-content {
+        margin-left: 0;
+        width: 100%;
+      }
+      
+      .hamburger {
+        display: block;
+      }
+      
+      .tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+      }
+      
+      .tab {
+        padding: 12px 15px;
+        font-size: 0.9rem;
+      }
+    }
+
+    @media screen and (max-width: 576px) {
+      .cards {
+        grid-template-columns: 1fr;
+      }
+      
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+      
+      .search-box {
+        max-width: 100%;
+      }
+      
+      .profile {
+        margin-left: 0;
+        align-self: flex-end;
+      }
+      
+      .tab {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+      }
+    }
+
+    /* Status indicators */
+    .status {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+    }
+    
+    .status-present {
+      background: rgba(40, 167, 69, 0.2);
+      color: #28a745;
+    }
+    
+    .status-absent {
+      background: rgba(231, 76, 60, 0.2);
+      color: #e74c3c;
+    }
+  </style>
+</head>
+<body>
+  <!-- Overlay for mobile -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="logo">
+      <i class="fas fa-graduation-cap logo-icon"></i>
+      <h2>S.W.A.Z Zaria</h2>
+    </div>
+    <ul class="nav-links">
+      <li><a href="admin_dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+      <li><a href="User_management.html"><i class="fas fa-users"></i> User Management</a></li>
+      <li><a href="classes.html" class="active"><i class="fas fa-book"></i> Classes & Academics</a></li>
+      <li><a href="attendance.html"><i class="fas fa-clipboard-check"></i> Attendance</a></li>
+      <li><a href="exams.html"><i class="fas fa-chart-bar"></i> Exams & Results</a></li>
+      <li><a href="fees.html"><i class="fas fa-money-bill-wave"></i> Finance / Fees</a></li>
+      <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+      <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+    </ul>
+  </div>
+
+  <!-- Main content -->
+  <div class="main-content" id="main-content">
+    <div class="topbar">
+      <div class="left-section">
+        <span class="hamburger" id="hamburger">
+          <i class="fas fa-bars">&#9776;</i>
+        </span>
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Search...">
+        </div>
+      </div>
+      <div class="profile">
+        <span>Admin</span>
+        <div class="profile-img">A</div>
+        <i class="fas fa-chevron-down"></i>
+      </div>
+    </div>
+
+    <!-- Overview Cards -->
+    <div class="cards">
+      <div class="card">
+        <h3>Total Classes</h3>
+        <p>25</p>
+      </div>
+      <div class="card">
+        <h3>Total Subjects</h3>
+        <p>40</p>
+      </div>
+      <div class="card">
+        <h3>Total Teachers</h3>
+        <p>85</p>
+      </div>
+      <div class="card">
+        <h3>Total Students</h3>
+        <p>1200</p>
+      </div>
+    </div>
+
+    <!-- Tabs Container -->
+    <div class="tabs-container">
+      <div class="tabs">
+        <div class="tab active" data-tab="classes">
+          <i class="fas fa-chalkboard-teacher"></i> Classes
+        </div>
+        <div class="tab" data-tab="subjects">
+          <i class="fas fa-book-open"></i> Subjects
+        </div>
+        <div class="tab" data-tab="timetable">
+          <i class="fas fa-calendar-alt"></i> Timetable
+        </div>
+        <div class="tab" data-tab="attendance">
+          <i class="fas fa-clipboard-list"></i> Attendance
+        </div>
+        <div class="tab" data-tab="calendar">
+          <i class="fas fa-calendar-day"></i> Calendar
+        </div>
+      </div>
+
+      <!-- Tab Content -->
+      <div id="classes" class="tab-content active">
+        <button class="btn btn-add"><i class="fas fa-plus"></i> Add New Class</button>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Class</th>
+                <th>Section</th>
+                <th>Class Teacher</th>
+                <th>Students</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>SS1</td>
+                <td>A</td>
+                <td>Mr. John</td>
+                <td>45</td>
+                <td class="action-buttons">
+                  <button class="btn btn-edit"><i class="fas fa-edit"></i></button>
+                  <button class="btn btn-delete"><i class="fas fa-trash"></i></button>
+                </td>
+              </tr>
+              <tr>
+                <td>SS2</td>
+                <td>B</td>
+                <td>Mrs. Jane</td>
+                <td>50</td>
+                <td class="action-buttons">
+                  <button class="btn btn-edit"><i class="fas fa-edit"></i></button>
+                  <button class="btn btn-delete"><i class="fas fa-trash"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="subjects" class="tab-content">
+        <button class="btn btn-add"><i class="fas fa-plus"></i> Add New Subject</button>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Subject</th>
+                <th>Class</th>
+                <th>Assigned Teacher</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Mathematics</td>
+                <td>All</td>
+                <td>Mr. Paul</td>
+                <td class="action-buttons">
+                  <button class="btn btn-edit"><i class="fas fa-edit"></i></button>
+                  <button class="btn btn-delete"><i class="fas fa-trash"></i></button>
+                </td>
+              </tr>
+              <tr>
+                <td>Biology</td>
+                <td>SS2</td>
+                <td>Mrs. Grace</td>
+                <td class="action-buttons">
+                  <button class="btn btn-edit"><i class="fas fa-edit"></i></button>
+                  <button class="btn btn-delete"><i class="fas fa-trash"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="timetable" class="tab-content">
+        <button class="btn btn-add"><i class="fas fa-upload"></i> Upload Timetable</button>
+        <div class="timetable-preview">
+          <p>Weekly timetable preview will show here...</p>
+          <!-- Timetable content would go here -->
+        </div>
+      </div>
+
+      <div id="attendance" class="tab-content">
+        <button class="btn btn-add"><i class="fas fa-plus"></i> Mark Attendance</button>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Student</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Michael</td>
+                <td>2025-09-10</td>
+                <td><span class="status status-present">Present</span></td>
+                <td class="action-buttons">
+                  <button class="btn btn-edit"><i class="fas fa-edit"></i></button>
+                </td>
+              </tr>
+              <tr>
+                <td>Sarah</td>
+                <td>2025-09-10</td>
+                <td><span class="status status-absent">Absent</span></td>
+                <td class="action-buttons">
+                  <button class="btn btn-edit"><i class="fas fa-edit"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="calendar" class="tab-content">
+        <button class="btn btn-add"><i class="fas fa-plus"></i> Add Event</button>
+        <div class="calendar-preview">
+          <p>Academic calendar with terms, holidays, and events will display here...</p>
+          <!-- Calendar content would go here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const hamburger = document.getElementById("hamburger");
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("overlay");
+      const tabs = document.querySelectorAll(".tab");
+      const tabContents = document.querySelectorAll(".tab-content");
+      
+      // Sidebar toggle with overlay
+      function toggleSidebar() {
+        sidebar.classList.toggle("active");
+        overlay.classList.toggle("active");
+        document.body.classList.toggle("no-scroll");
+      }
+      
+      hamburger.addEventListener("click", toggleSidebar);
+      overlay.addEventListener("click", toggleSidebar);
+      
+      // Tab switching
+      tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+          tabs.forEach(t => t.classList.remove("active"));
+          tab.classList.add("active");
+          
+          const target = tab.getAttribute("data-tab");
+          tabContents.forEach(content => {
+            content.classList.remove("active");
+            if(content.id === target) {
+              content.classList.add("active");
+            }
+          });
+        });
+      });
+      
+      // Handle window resize
+      function handleResize() {
+        if (window.innerWidth > 768) {
+          sidebar.classList.remove("active");
+          overlay.classList.remove("active");
+        }
+      }
+      
+      window.addEventListener('resize', handleResize);
+    });
+  </script>
+</body>
+</html>
