@@ -1,25 +1,1373 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Login | School Management</title>
-  <link rel="stylesheet" href="assets/css/admin styles/style.css">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seat of Wisdom Academy, Zaria</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="shortcut icon" href="solid rock logo.png" type="image/x-icon">
+  <style>
+    /* CSS Reset and Variables */
+    :root {
+      --primary-green: #2e7d32;
+      --secondary-green: #4caf50;
+      --light-green: #e8f5e9;
+      --cream: #f9f7f1;
+      --dark-text: #333;
+      --light-text: #fff;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      text-decoration: none;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: var(--dark-text);
+      background-color: var(--cream);
+      overflow-x: hidden;
+    }
+    
+    /* Typography */
+    h1, h2, h3, h4, h5, h6 {
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    
+    p {
+      margin-bottom: 1rem;
+    }
+    
+    /* Utility Classes */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+    
+    .section-padding {
+      padding: 4rem 0;
+    }
+    
+    .text-center {
+      text-align: center;
+    }
+    
+    .btn {
+      display: inline-block;
+      padding: 0.8rem 1.5rem;
+      background-color: var(--primary-green);
+      color: var(--light-text);
+      border: none;
+      border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: 0.5s;
+    }
+    
+    .btn:hover::before {
+      left: 100%;
+    }
+    
+    .btn:hover {
+      background-color: var(--secondary-green);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .btn-outline {
+      background-color: transparent;
+      border: 2px solid var(--primary-green);
+      color: var(--primary-green);
+    }
+    
+    .btn-outline:hover {
+      background-color: var(--primary-green);
+      color: var(--light-text);
+    }
+    
+    .card {
+      background: var(--light-text);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: 1.5rem;
+      transition: var(--transition);
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: var(--primary-green);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.5s ease;
+    }
+    
+    .card:hover::before {
+      transform: scaleX(1);
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    @keyframes fadeInRight {
+      from {
+        opacity: 0;
+        transform: translateX(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+      100% {
+        transform: translateY(0);
+      }
+    }
+    
+    .animate-fadeInUp {
+      animation: fadeInUp 1s ease forwards;
+    }
+    
+    .animate-fadeInLeft {
+      animation: fadeInLeft 1s ease forwards;
+    }
+    
+    .animate-fadeInRight {
+      animation: fadeInRight 1s ease forwards;
+    }
+    
+    .animate-pulse {
+      animation: pulse 2s infinite;
+    }
+    
+    .animate-float {
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    /* Header & Navigation */
+    .navbar {
+      background: var(--light-text);
+      padding: 1rem 0;
+      box-shadow: var(--shadow);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      transition: var(--transition);
+    }
+    
+    .navbar.scrolled {
+      padding: 0.5rem 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+    }
+    
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+    
+    .logo img {
+      height: 60px;
+      transition: var(--transition);
+    }
+    
+    .navbar.scrolled .logo img {
+      height: 50px;
+    }
+    
+    .logo-text {
+      margin-left: 1rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary-green);
+      line-height: 1.2;
+    }
+    
+    .nav-links {
+      display: flex;
+      list-style: none;
+    }
+    
+    .nav-links li {
+      margin-left: 1.5rem;
+      position: relative;
+    }
+    
+    .nav-links a {
+      color: var(--dark-text);
+      font-weight: 600;
+      transition: var(--transition);
+      position: relative;
+    }
+    
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--primary-green);
+      transition: var(--transition);
+    }
+    
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+    
+    .nav-links a:hover {
+      color: var(--primary-green);
+    }
+    
+    .nav-btn {
+      margin-left: 1.5rem;
+    }
+    
+    .hamburger {
+      display: none;
+      cursor: pointer;
+      font-size: 1.5rem;
+      color: var(--primary-green);
+    }
+    
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('pic.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--light-text);
+      margin-top: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, rgba(46, 125, 50, 0.3), transparent);
+      z-index: 0;
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+    
+    .hero-content h1 {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    
+    .hero-content p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      max-width: 700px;
+    }
+    
+    .hero-btns {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    
+    /* Floating elements in hero */
+    .floating-elements {
+      background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),url(pic.jpg);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+    }
+    
+    .floating-element {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+    }
+    
+    .floating-element:nth-child(1) {
+      width: 80px;
+      height: 80px;
+      top: 20%;
+      left: 10%;
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    .floating-element:nth-child(2) {
+      width: 60px;
+      height: 60px;
+      top: 60%;
+      left: 80%;
+      animation: float 8s ease-in-out infinite;
+    }
+    
+    .floating-element:nth-child(3) {
+      width: 40px;
+      height: 40px;
+      top: 80%;
+      left: 20%;
+      animation: float 10s ease-in-out infinite;
+    }
+    
+    /* About Section */
+    .about-section {
+      background-color: var(--light-text);
+    }
+    
+    .section-title {
+      text-align: center;
+      margin-bottom: 3rem;
+      color: var(--primary-green);
+      position: relative;
+    }
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background-color: var(--primary-green);
+    }
+    
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    
+    .card-icon {
+      font-size: 2.5rem;
+      color: var(--primary-green);
+      margin-bottom: 1rem;
+      transition: var(--transition);
+    }
+    
+    .card:hover .card-icon {
+      transform: scale(1.1);
+      color: var(--secondary-green);
+    }
+    
+    .card-title {
+      color: var(--primary-green);
+      margin-bottom: 1rem;
+    }
+    
+    /* Why Us Section */
+    .why-us-section {
+      background-color: var(--light-green);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .why-us-section::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 300px;
+      height: 300px;
+      background: rgba(76, 175, 80, 0.1);
+      border-radius: 50%;
+      z-index: 0;
+    }
+    
+    .why-us-section::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -10%;
+      width: 400px;
+      height: 400px;
+      background: rgba(46, 125, 50, 0.1);
+      border-radius: 50%;
+      z-index: 0;
+    }
+    
+    .why-us-section .container {
+      position: relative;
+      z-index: 1;
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+    
+    /* Team Section */
+    .team-section {
+      background-color: var(--light-text);
+    }
+    
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+    
+    .team-member {
+      text-align: center;
+      transition: var(--transition);
+    }
+    
+    .team-member:hover {
+      transform: translateY(-10px);
+    }
+    
+    .team-img {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 1rem;
+      border: 5px solid var(--light-green);
+      transition: var(--transition);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .team-member:hover .team-img {
+      border-color: var(--primary-green);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+    
+    .team-name {
+      color: var(--primary-green);
+      margin-bottom: 0.5rem;
+    }
+    
+    .team-role {
+      color: var(--dark-text);
+      font-weight: 500;
+    }
+    
+    /* Stats Section */
+    .stats-section {
+      background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+      color: var(--light-text);
+      padding: 3rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .stats-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.05)"/></svg>');
+      background-size: cover;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .stat-item {
+      padding: 1rem;
+    }
+    
+    .stat-number {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    
+    .stat-text {
+      font-size: 1.2rem;
+    }
+    
+    /* Testimonial Section */
+    .testimonial-section {
+      background: linear-gradient(rgba(46, 125, 50, 0.8), rgba(46, 125, 50, 0.8)), url('tinimu.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: var(--light-text);
+      text-align: center;
+      padding: 5rem 0;
+      position: relative;
+    }
+    
+    .testimonial-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+      background-size: cover;
+    }
+    
+    .testimonial-content {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .testimonial-content blockquote {
+      font-size: 1.5rem;
+      font-style: italic;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+    
+    .testimonial-content blockquote::before,
+    .testimonial-content blockquote::after {
+      content: '"';
+      font-size: 4rem;
+      color: rgba(255, 255, 255, 0.3);
+      position: absolute;
+      line-height: 1;
+    }
+    
+    .testimonial-content blockquote::before {
+      top: -20px;
+      left: -30px;
+    }
+    
+    .testimonial-content blockquote::after {
+      bottom: -40px;
+      right: -30px;
+    }
+    
+    /* Gallery Preview Section */
+    .gallery-section {
+      background-color: var(--light-text);
+    }
+    
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+    
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      height: 200px;
+    }
+    
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: var(--transition);
+    }
+    
+    .gallery-item:hover img {
+      transform: scale(1.1);
+    }
+    
+    .gallery-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(transparent, rgba(0,0,0,0.7));
+      color: white;
+      padding: 1rem;
+      transform: translateY(100%);
+      transition: var(--transition);
+    }
+    
+    .gallery-item:hover .gallery-overlay {
+      transform: translateY(0);
+    }
+    
+    /* News Section */
+    .news-section {
+      background-color: var(--light-green);
+    }
+    
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    
+    .news-card {
+      background: var(--light-text);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+    
+    .news-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
+    .news-img {
+      height: 200px;
+      width: 100%;
+      object-fit: cover;
+    }
+    
+    .news-content {
+      padding: 1.5rem;
+    }
+    
+    .news-date {
+      color: var(--primary-green);
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .news-title {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      color: var(--dark-text);
+    }
+    
+    /* Footer */
+    .footer {
+      background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+      color: var(--light-text);
+      padding: 3rem 0 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary-green), var(--secondary-green));
+    }
+    
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .footer-logo {
+      margin-bottom: 1rem;
+    }
+    
+    .footer-links h3 {
+      color: var(--light-green);
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    
+    .footer-links h3::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 40px;
+      height: 2px;
+      background-color: var(--light-green);
+    }
+    
+    .footer-links ul {
+      list-style: none;
+    }
+    
+    .footer-links li {
+      margin-bottom: 0.8rem;
+    }
+    
+    .footer-links a {
+      color: #ccc;
+      transition: var(--transition);
+    }
+    
+    .footer-links a:hover {
+      color: var(--light-green);
+      padding-left: 5px;
+    }
+    
+    .social-icons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .social-icons a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background-color: #333;
+      border-radius: 50%;
+      color: var(--light-text);
+      transition: var(--transition);
+    }
+    
+    .social-icons a:hover {
+      background-color: var(--primary-green);
+      transform: translateY(-3px);
+    }
+    
+    .copyright {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid #444;
+      font-size: 0.9rem;
+      color: #aaa;
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* Back to Top Button */
+    .back-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: var(--primary-green);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+      opacity: 0;
+      visibility: hidden;
+      z-index: 999;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    
+    .back-to-top.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .back-to-top:hover {
+      background: var(--secondary-green);
+      transform: translateY(-3px);
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 992px) {
+      .hero-content h1 {
+        font-size: 2.5rem;
+      }
+      
+      .nav-links {
+        position: fixed;
+        top: 80px;
+        left: -100%;
+        width: 100%;
+        height: calc(100vh - 80px);
+        background-color: var(--light-text);
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 2rem;
+        transition: var(--transition);
+        box-shadow: var(--shadow);
+      }
+      
+      .nav-links.active {
+        left: 0;
+      }
+      
+      .nav-links li {
+        margin: 1rem 0;
+      }
+      
+      .hamburger {
+        display: block;
+      }
+      
+      .nav-btn {
+        margin-left: 0;
+        margin-top: 1rem;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .hero-content h1 {
+        font-size: 2rem;
+      }
+      
+      .hero-content p {
+        font-size: 1rem;
+      }
+      
+      .section-padding {
+        padding: 3rem 0;
+      }
+      
+      .hero-btns {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .btn {
+        width: 200px;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .logo-text {
+        font-size: 1rem;
+      }
+      
+      .hero {
+        height: 80vh;
+      }
+      
+      .hero-content h1 {
+        font-size: 1.8rem;
+      }
+      
+      .card {
+        padding: 1rem;
+      }
+      
+      .section-title {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
 </head>
-<body class="login-body">
+<body>
+  <!-- Back to Top Button -->
+  <div class="back-to-top" id="backToTop">
+    <i class="fas fa-chevron-up"></i>
+  </div>
 
-<div class="login-container">
-    <h2>School Management System</h2>
-    <form method="POST" class="login-form">
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <button type="submit" >Login</button>
-    </form>
-    <button type="submit"><a href="admin/admin_dashboard.html"> Login</a></button>
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="container nav-container">
+      <div class="logo">
+        <img src="images/logo.png" alt="School Logo">
+        <div class="logo-text">
+          Seat of Wisdom Academy<br>Zaria
+        </div>
+      </div>
+      
+      <div class="hamburger" id="hamburger">
+        <i class="fas fa-bars"></i>
+      </div>
+      
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#why-us">Why Us</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#news">News</a></li>
+        <li><a href="#team">Team</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li class="nav-btn">
+          <a href="C:\Users\Floki\Desktop\VixTech\PROJECTS\SWAZ Zaria\School Management System\login.html" class="btn">E-Portal</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
 
-    <p class="footer-text">> Your School</p>
-</div>
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="floating-elements">
+      <div class="floating-element"></div>
+      <div class="floating-element"></div>
+      <div class="floating-element"></div>
+    </div>
+    
+    <div class="container hero-content">
+      <h1 class="animate-fadeInUp">Welcome to Seat of Wisdom Academy</h1>
+      <p class="animate-fadeInUp" style="animation-delay: 0.2s">Nurturing young minds with quality education and moral values for a brighter future</p>
+      <div class="hero-btns">
+        <a href="#about" class="btn animate-fadeInUp" style="animation-delay: 0.4s">About Us</a>
+        <a href="#" class="btn btn-outline animate-fadeInUp" style="animation-delay: 0.5s">History</a>
+        <a href="#" class="btn animate-fadeInUp" style="animation-delay: 0.6s">Apply Now</a>
+      </div>
+    </div>
+  </section>
 
+  <!-- About Section -->
+  <section class="about-section section-padding" id="about">
+    <div class="container">
+      <h2 class="section-title animate-fadeInUp">About Our School</h2>
+      <div class="cards-grid">
+        <div class="card animate-fadeInLeft" style="animation-delay: 0.2s">
+          <div class="card-icon">
+            <i class="fas fa-bullseye"></i>
+          </div>
+          <h3 class="card-title">Our Mission</h3>
+          <p>Our mission is to explore and bring out the best potentials in every child. We equip students with qualitative and competitive educational and moral instructions to prepare them as leaders of tomorrow.</p>
+        </div>
+        
+        <div class="card animate-fadeInUp" style="animation-delay: 0.3s">
+          <div class="card-icon">
+            <i class="fas fa-history"></i>
+          </div>
+          <h3 class="card-title">Our History</h3>
+          <p>Seat of Wisdom Academy was established with the vision to provide standard education with modern teaching facilities and experienced teachers. We've been shaping young minds since our inception.</p>
+        </div>
+        
+        <div class="card animate-fadeInRight" style="animation-delay: 0.4s">
+          <div class="card-icon">
+            <i class="fas fa-user-graduate"></i>
+          </div>
+          <h3 class="card-title">Admission Policy</h3>
+          <p>We welcome students of all backgrounds. Prospective students must pass our entrance examination and interview. We maintain small class sizes to ensure personalized attention for each child.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Us Section -->
+  <section class="why-us-section section-padding" id="why-us">
+    <div class="container">
+      <h2 class="section-title animate-fadeInUp">Why Choose Us</h2>
+      <div class="features-grid">
+        <div class="card animate-fadeInLeft" style="animation-delay: 0.2s">
+          <div class="card-icon">
+            <i class="fas fa-book-open"></i>
+          </div>
+          <h3 class="card-title">Quality Curriculum</h3>
+          <p>We follow a comprehensive curriculum that balances academic excellence with practical skills development, preparing students for future challenges.</p>
+        </div>
+        
+        <div class="card animate-fadeInUp" style="animation-delay: 0.3s">
+          <div class="card-icon">
+            <i class="fas fa-chalkboard-teacher"></i>
+          </div>
+          <h3 class="card-title">Certified Teachers</h3>
+          <p>Our faculty consists of highly qualified and experienced educators who are passionate about nurturing young minds and inspiring lifelong learning.</p>
+        </div>
+        
+        <div class="card animate-fadeInUp" style="animation-delay: 0.4s">
+          <div class="card-icon">
+            <i class="fas fa-running"></i>
+          </div>
+          <h3 class="card-title">Sports & Activities</h3>
+          <p>We believe in holistic development. Our extensive sports facilities and extracurricular activities ensure students develop physically and socially.</p>
+        </div>
+        
+        <div class="card animate-fadeInRight" style="animation-delay: 0.5s">
+          <div class="card-icon">
+            <i class="fas fa-laptop-code"></i>
+          </div>
+          <h3 class="card-title">Digital Skills</h3>
+          <p>We integrate technology into learning with digital skills programs, ensuring our students are prepared for the digital age.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Preview Section -->
+  <section class="gallery-section section-padding" id="gallery">
+    <div class="container">
+      <h2 class="section-title animate-fadeInUp">School Gallery</h2>
+      <div class="gallery-grid">
+        <div class="gallery-item animate-fadeInUp" style="animation-delay: 0.2s">
+          <img src="classroom.jpg" alt="Classroom">
+          <div class="gallery-overlay">
+            <h3>Modern Classrooms</h3>
+          </div>
+        </div>
+        <div class="gallery-item animate-fadeInUp" style="animation-delay: 0.3s">
+          <img src="library.jpg" alt="Library">
+          <div class="gallery-overlay">
+            <h3>Well-Stocked Library</h3>
+          </div>
+        </div>
+        <div class="gallery-item animate-fadeInUp" style="animation-delay: 0.4s">
+          <img src="sports.jpg" alt="Sports">
+          <div class="gallery-overlay">
+            <h3>Sports Facilities</h3>
+          </div>
+        </div>
+        <div class="gallery-item animate-fadeInUp" style="animation-delay: 0.5s">
+          <img src="lab.jpg" alt="Science Lab">
+          <div class="gallery-overlay">
+            <h3>Science Laboratory</h3>
+          </div>
+        </div>
+      </div>
+      <div class="text-center" style="margin-top: 2rem;">
+        <a href="#" class="btn">View Full Gallery</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- News Section -->
+  <section class="news-section section-padding" id="news">
+    <div class="container">
+      <h2 class="section-title animate-fadeInUp">Latest News & Events</h2>
+      <div class="news-grid">
+        <div class="news-card animate-fadeInLeft" style="animation-delay: 0.2s">
+          <img src="event1.jpg" alt="Event" class="news-img">
+          <div class="news-content">
+            <div class="news-date">June 15, 2023</div>
+            <h3 class="news-title">Annual Science Fair 2023</h3>
+            <p>Our students showcased innovative projects at the annual science fair, demonstrating creativity and scientific knowledge.</p>
+          </div>
+        </div>
+        
+        <div class="news-card animate-fadeInUp" style="animation-delay: 0.3s">
+          <img src="event2.jpg" alt="Event" class="news-img">
+          <div class="news-content">
+            <div class="news-date">July 5, 2023</div>
+            <h3 class="news-title">Sports Day Celebration</h3>
+            <p>Students participated in various athletic events, promoting teamwork, sportsmanship, and healthy competition.</p>
+          </div>
+        </div>
+        
+        <div class="news-card animate-fadeInRight" style="animation-delay: 0.4s">
+          <img src="event3.jpg" alt="Event" class="news-img">
+          <div class="news-content">
+            <div class="news-date">August 20, 2023</div>
+            <h3 class="news-title">Cultural Day Festivities</h3>
+            <p>Our school celebrated cultural diversity with traditional attire, dances, and cuisine from various ethnic groups.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team Section -->
+  <section class="team-section section-padding" id="team">
+    <div class="container">
+      <h2 class="section-title animate-fadeInUp">Our Administrative Team</h2>
+      <div class="team-grid">
+        <div class="team-member animate-fadeInLeft" style="animation-delay: 0.2s">
+          <img src="images/principal.jpg" alt="Principal" class="team-img">
+          <h3 class="team-name">Mbachu GE</h3>
+          <p class="team-role">Principal</p>
+        </div>
+        
+        <div class="team-member animate-fadeInUp" style="animation-delay: 0.3s">
+          <img src="images/Vice principal.jpg" alt="Vice Principal" class="team-img">
+          <h3 class="team-name">Julius Imodey</h3>
+          <p class="team-role">Vice Principal</p>
+        </div>
+        
+        <div class="team-member animate-fadeInUp" style="animation-delay: 0.4s">
+          <img src="images/bursar.jpg" alt="Bursar" class="team-img">
+          <h3 class="team-name">Ruth Itah</h3>
+          <p class="team-role">Bursar</p>
+        </div>
+        
+        <div class="team-member animate-fadeInRight" style="animation-delay: 0.5s">
+          <img src="images/secretary.jpg" alt="Secretary" class="team-img">
+          <h3 class="team-name">Rhoda Omagiri</h3>
+          <p class="team-role">Secretary</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats-section">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item animate-fadeInUp" style="animation-delay: 0.2s">
+          <span class="stat-number" data-count="100">0</span>%
+          <div class="stat-text">Student Pass Rate</div>
+        </div>
+        
+        <div class="stat-item animate-fadeInUp" style="animation-delay: 0.3s">
+          <span class="stat-number" data-count="90">0</span>+
+          <div class="stat-text">Certified Teachers</div>
+        </div>
+        
+        <div class="stat-item animate-fadeInUp" style="animation-delay: 0.4s">
+          <span class="stat-number" data-count="95">0</span>%
+          <div class="stat-text">Satisfied Parents</div>
+        </div>
+        
+        <div class="stat-item animate-fadeInUp" style="animation-delay: 0.5s">
+          <span class="stat-number" data-count="15">0</span>+
+          <div class="stat-text">Years of Excellence</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonial Section -->
+  <section class="testimonial-section">
+    <div class="container">
+      <div class="testimonial-content animate-fadeInUp">
+        <blockquote>
+          "I am a word of letters three, add two more and fewer there will be. Add one more and three you will see, the whole world will be there for thee. What am I?"
+        </blockquote>
+        <p>- A riddle from our students</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer" id="contact">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about animate-fadeInLeft" style="animation-delay: 0.2s">
+          <div class="footer-logo">
+            <img src="images/logo.png" alt="School Logo" height="60">
+          </div>
+          <p>Seat of Wisdom Academy is committed to providing quality education that nurtures young minds and prepares them for future challenges.</p>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fas fa-phone"></i></a>
+            <a href="#"><i class="fas fa-envelope"></i></a>
+          </div>
+        </div>
+        
+        <div class="footer-links animate-fadeInUp" style="animation-delay: 0.3s">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#why-us">Why Choose Us</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#team">Our Team</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-links animate-fadeInUp" style="animation-delay: 0.4s">
+          <h3>Resources</h3>
+          <ul>
+            <li><a href="#">Admissions</a></li>
+            <li><a href="#">Academic Calendar</a></li>
+            <li><a href="#">School Portal</a></li>
+            <li><a href="#">Gallery</a></li>
+            <li><a href="#">Virtual Tour</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-links animate-fadeInRight" style="animation-delay: 0.5s">
+          <h3>Contact Info</h3>
+          <ul>
+            <li><i class="fas fa-map-marker-alt"></i> Zaria, Nigeria</li>
+            <li><i class="fas fa-phone"></i> +234 803 331 6094</li>
+            <li><i class="fas fa-envelope"></i> info@seatofwisdom.edu.ng</li>
+            <li><i class="fas fa-clock"></i> Mon - Fri: 8:00 AM - 4:00 PM</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="copyright">
+        &copy; 2023 Seat of Wisdom Academy, Zaria. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile Navigation Toggle
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('nav-links');
+    
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+    
+    // Close mobile menu when clicking on a link
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+      });
+    });
+    
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+      
+      // Back to top button
+      const backToTop = document.getElementById('backToTop');
+      if (window.scrollY > 300) {
+        backToTop.classList.add('active');
+      } else {
+        backToTop.classList.remove('active');
+      }
+    });
+    
+    // Back to top functionality
+    document.getElementById('backToTop').addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+    
+    // Counter animation for stats
+    function animateCounters() {
+      const counters = document.querySelectorAll('.stat-number');
+      const speed = 200;
+      
+      counters.forEach(counter => {
+        const target = +counter.getAttribute('data-count');
+        const count = +counter.innerText;
+        const increment = target / speed;
+        
+        if (count < target) {
+          counter.innerText = Math.ceil(count + increment);
+          setTimeout(() => animateCounters(), 1);
+        } else {
+          counter.innerText = target;
+        }
+      });
+    }
+    
+    // Intersection Observer for animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-fadeInUp');
+          
+          // Start counter animation when stats section is in view
+          if (entry.target.classList.contains('stats-section')) {
+            animateCounters();
+          }
+        }
+      });
+    }, observerOptions);
+    
+    // Observe all sections for animation
+    document.querySelectorAll('section').forEach(section => {
+      observer.observe(section);
+    });
+    
+    // Add animation classes to elements on page load for above-the-fold content
+    window.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.hero-content h1, .hero-content p, .hero-btns .btn').forEach(el => {
+        el.classList.add('animate-fadeInUp');
+      });
+    });
+  </script>
 </body>
 </html>
